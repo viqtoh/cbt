@@ -1,0 +1,60 @@
+{% load alltags %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	<title>{{ course.name }}</title>
+</head>
+<body>
+	<div class="d-flex">
+		<div class="left-section">
+			<div class="examwelcome text-center">
+				<p class="exwel">Welcome!</p>
+				<p>Ekong Nsikan</p>
+			</div>
+			<div class="examsection text-center">
+				{% for section in sections %}
+				<a class="text-decoration-none" href="{% url 'exam:exampage' passcode forloop.counter 1 %}" ><p class="text-uppercase {% if forloop.counter == active %}active {% endif %}">{{ section.name }}</p></a>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="right-section">
+			<div class="d-flex examtop">
+				<div class="timer">54:39 of 60mins</div>
+				<span class="examcopy">Copyright @ loam ICT 2023</span>
+			</div>
+			<div class="examnumbers">
+				{% for num in questions %}
+					<a href="{% if num.id != question.id %} {% url 'exam:exampage' passcode active forloop.counter %} {% else %}#{% endif %}" class="mx-1"><button class="questno {% if num.id == question.id %} questactive {% endif %} " >{{ forloop.counter }}</button></a>
+				{% endfor %}
+				
+			</div>
+			<div class="question">
+				<span class="questionNo">Question {{ questionNo }} </span>
+				<p class="realquestion" >
+					{{ question }}
+				</p>
+			</div>
+			<div class="answers" >
+				{% for answer in answers %}
+					<div class="mb-2">
+						<span><span class="mr-1">{% checklet forloop.counter %}.</span>  {{ answer }}</span>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="examfooter text-center">
+				<div class="navigation justify-content-center d-flex" >
+					<div class="previous text-right">PREVIOUS</div><div class="next">NEXT</div>
+				</div>
+				<span class="bottom text-uppercase mt-1" >{{ course.name }}</span>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>

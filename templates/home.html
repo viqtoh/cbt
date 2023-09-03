@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+	<style type="text/css">
+		input:focus{
+		outline: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="mainbg" style="background: url('{% static "images/mainbg.png" %}');">
+		<img src="{% static 'images/icon.png' %}" class="logo">
+		<div class="centered text-center">
+			<span class="welspan">WELCOME TO</span><br/>
+			<span class="schspan">LOAM SCHOLARSHIP TEST</span>
+		</div>
+	</div>
+	<form method="POST">
+		{% csrf_token %}
+	<div class="divider text-center py-3">
+		<span style="font-size: 20px;">Passcode:</span><input type="text" class="passcode mx-2 px-3" name="passcode" required>
+	</div>
+	<div class="subdiv text-center">
+		<button class="logbtn">LOGIN</button>
+		<div class="subsubdiv">
+			<p>Carefully type your PASSCODE into the text box provided above and click on LOGIN</p>
+			<p>Click START to start writing your test. You have subjects written at the lefthand side of the screen, navigate through them as you like.</p>
+			<p>Questions answered are marked green while those unanswered are red. Make sure you answer all questions.</p>
+			<p>click SUBMIT to submit your test and expect your result sent to you via your telephone line.</p>
+		</div>
+	</form>
+	</div>
+</body>
+</html>

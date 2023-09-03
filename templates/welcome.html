@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+	<style type="text/css">
+		input:focus{
+		outline: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="welcomebg" style="background: url('{% static "images/welcomebg.png" %}');">
+		<img src="{% static 'images/success.png' %}" class="success">
+		<div class="welcomediv">
+			<span class="welgreet">WELCOME!</span><br/>
+			<span class="welname">EKONG , NSIKAN</span><br/>
+			<span class="welpass">{{ passcode }}</span><br/>
+			<p class="weltext" style="max-width: 80%;">You are about writing this aptitude test. This test will last for 60mins and will contain 100 questions in all.</p>
+			<p class="weltext">English Language - 30 questions</p>
+			<p class="weltext">Mathematics - 30 questions</p>
+			<p class="weltext">General Paper - 40 questions</p>
+			
+		</div>
+		<div class="text-center startbtndiv" style="width: 100%;">
+			<a href="{% url 'exam:exampage' passcode 1 1 %}"><button class="startbtn">START</button></a>
+		</div>
+	</div>
+	
+	</div>
+</body>
+</html>
