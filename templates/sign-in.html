@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Twitter -->
+    <meta name="twitter:site" content="@themepixels">
+    <meta name="twitter:creator" content="@themepixels">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Katniss">
+    <meta name="twitter:description" content="Premium Quality and Responsive UI for Dashboard.">
+    <meta name="twitter:image" content="http://themepixels.me/katniss/img/katniss-social.png">
+
+    <!-- Facebook -->
+    <meta property="og:url" content="http://themepixels.me/katniss">
+    <meta property="og:title" content="Bracket">
+    <meta property="og:description" content="Premium Quality and Responsive UI for Dashboard.">
+
+    <meta property="og:image" content="http://themepixels.me/katniss/img/katniss-social.png">
+    <meta property="og:image:secure_url" content="http://themepixels.me/katniss/img/katniss-social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!-- Meta -->
+    <meta name="description" content="Premium Quality and Responsive UI for Dashboard.">
+    <meta name="author" content="ThemePixels">
+
+
+    <title>Sign in</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  </head>
+
+  <body style="background:url({% static 'images/welcomebg.png' %}) no-repeat; background-size: cover;">
+
+    <div class="signpanel-wrapper">
+      <div class="signbox logbox">
+        <div class="signbox-header"style="background-color:#F47878;">
+          <img src="{% static 'images/real_logo.png' %}" style="width:190px;">
+          <h4>Welcome Back!</h4>
+          <p class="mg-b-0">Fill in your Login details below</p>
+       
+        </div><!-- signbox-header -->
+        <div class="signbox-body" style="background-color:   rgba(255, 255, 255, 1);">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="text-center text-danger">{{ error }}</div>
+          <div class="form-group">
+            <label class="form-control-label"style="color:black;">Email:</label>
+            <input type="email" name="email" placeholder="Enter your email" value="{{ email }}" class="form-control">
+          </div><!-- form-group -->
+          <div class="form-group">
+            <label class="form-control-label"style="color:black;">Password:</label>
+            <input type="password" name="password" placeholder="Enter your password" class="form-control">
+          </div><!-- form-group -->
+          <button class="btn btn-dark btn-block"style="cursor: pointer; background-color: #F47878; border: none;">Sign In</button>
+          
+        </form>
+        </div><!-- signbox-body -->
+      </div><!-- signbox -->
+    </div><!-- signpanel-wrapper -->
+
+    <script src="{% static 'lib/jquery/jquery.js' %}"></script>
+    <script src="{% static 'lib/popper.js/popper.js' %}"></script>
+    <script src="{% static 'lib/bootstrap/bootstrap.js' %}"></script>
+  </body>
+</html>

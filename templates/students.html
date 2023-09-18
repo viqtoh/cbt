@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Test | Students{% endblock title %}
+
+{% block boot %}
+    <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+    {% endblock boot %}
+
+{% block content %}
+<style type="text/css">
+  
+.pinoverlay{
+  height: 158px;
+  width: 459px;
+  position: fixed;
+  top: calc(50vh - 58px);
+  left: calc(50vw - 229.5px);
+  background-color: white;
+  z-index: 200;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 10px rgba(155, 155, 155, 0.4);
+}
+.overtitle{
+  font-weight: bold;
+  font-size: 12px;
+  color: black;
+}
+#invis{
+  display: none;
+}
+.passinput{
+  width: 100px;
+  background: #E3E3E3;
+  border-radius: 5px;
+  border: 1px solid #E3E3E3;
+  font-size: 25px;
+  letter-spacing: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.passinput:focused{
+  border: 1px solid #E3E3E3;
+}
+.acquireimg{
+  width: 30%;
+}  
+.acquire{
+  width: 30%;
+  height: 50vh;
+}
+@media screen and (max-width: 700px){
+  .pinoverlay{
+    height: 135px;
+    width: 306px;
+    top: calc(50vh - 135px);
+    left: calc(50vw - 153px);
+  }
+  .acquireimg{
+    width: 50%;
+  }
+  .acquire{
+    width: 50%;
+    height: 30vh;
+  }
+}
+</style>
+
+    <!-- ##### MAIN PANEL ##### -->
+    <div class="kt-mainpanel">
+      
+      <div class="kt-pagebody">
+
+        <div class="card" style=" border-radius:10px;background-color:rgba(242, 242, 242, 1);">
+
+        	<div class="kt-pagetitle" style="background-color:rgba(214, 211, 237, 1);color:rgba(35, 30, 84, 1);">
+		        <h5 style=" margin-left:50px;">Students</h5>
+
+		    </div><!-- kt-pagetitle -->
+		    <div class="cardbody  pd-20 pd-sm-40">
+            <div id="preformdiv">
+              <button class="btn btn-default" onclick="show()">Add Student</button>
+            
+            </div>
+
+        <div id="formdiv" class="formdiv mb-5" style="width: 40%; display: none;">
+          <div class="d-flex formtop">
+              <h5>Add a new Student</h5> <button class="btn btn-default" onclick="hide()">Close</button>
+            </div>
+          <form method="POST">
+            {% csrf_token %}
+            <span class="mt-1" style="font-size: 12px;">Passcode will be generated automatically</span>
+            <p>Student Name</p>
+            <input class="examname" type="text" name="name" maxlength="50" value="{{ course.name }}" required>
+            <p>Student Registration Number</p>
+            <input class="examname" type="text" name="reg" maxlength="50" value="{{ course.reg }}" required>
+            <button class="btn btn-default">Save</button>
+          </form>
+        </div>
+          <form method="POST">
+            {% csrf_token %}
+            <div class="d-flex mt-4">
+              <input type="search" name="search" id="search" value="{{ search }}" placeholder="search by name"><button class="ml-3" id="btnsearch">Search</button>  
+            </div>
+            
+          </form>
+            <table style="width: 100%;" class="mt-3 table">
+              <thead>
+                <th>s/n</th>
+                <th>Name</th>
+                <th>Passcode</th>
+                <th>Registration No.</th>
+                <th>Status</th>
+              </thead>
+                <tbody>
+                {% for student in students %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><span class="text-capitalize">{{ student.name }}</span></td>
+                  <td>{{ student.passcode }}</td>
+                  <td>{{ student.reg }}</td>
+                  <td>
+                    <form method="POST">
+                      {% csrf_token %}
+                      <input type="hidden" name="id" value="{{ student.id }}">
+                      <input type="hidden" name="next" value="{{ request.path }}">
+                     <button class="{% if student.status == 'active' %} actives {% else %} inactives {% endif %}">{{ student.status }}</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            {% if students.count == 0 %}
+            <div class="cardbody  pd-20 pd-sm-40">
+              <span>No Registered Student</span>  
+            </div>
+            
+            {% endif %}
+             <div class="mt-4">
+        {% include "paginator.html" with page=students %}
+    </div>
+      
+		    </div>
+
+
+        </div>
+
+    </div>
+    
+    
+
+    </div><!-- kt-mainpanel -->
+
+  <script type="text/javascript">
+    
+    function show(){
+      document.getElementById('preformdiv').style.display='none';
+      document.getElementById('formdiv').style.display='block';
+    }
+    function hide(){
+      document.getElementById('formdiv').style.display='none';
+      document.getElementById('preformdiv').style.display='block';
+    }
+
+ </script>
+
+
+{% endblock %}

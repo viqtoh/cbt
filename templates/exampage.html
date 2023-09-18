@@ -8,53 +8,119 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-	<title>{{ course.name }}</title>
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+	<title>Exam | {{ course.name }}</title>
 </head>
 <body>
 	<div class="d-flex">
-		<div class="left-section">
+		<div class="left-section" style="position: fixed;">
 			<div class="examwelcome text-center">
 				<p class="exwel">Welcome!</p>
-				<p>Ekong Nsikan</p>
+				<p>{{ student.name }}</p>
 			</div>
 			<div class="examsection text-center">
 				{% for section in sections %}
 				<a class="text-decoration-none" href="{% url 'exam:exampage' passcode forloop.counter 1 %}" ><p class="text-uppercase {% if forloop.counter == active %}active {% endif %}">{{ section.name }}</p></a>
 				{% endfor %}
 			</div>
+			<div class="text-left" style="width: 100%">
+					<button class="subbtn" id="subbtn" onclick="rsubmit()">SUBMIT</button>
+			</div>
 		</div>
 		<div class="right-section">
 			<div class="d-flex examtop">
-				<div class="timer">54:39 of 60mins</div>
+				<div class="timer"><span id="realtime"></span> of {{ course.time }}mins</div>
 				<span class="examcopy">Copyright @ loam ICT 2023</span>
 			</div>
 			<div class="examnumbers">
 				{% for num in questions %}
-					<a href="{% if num.id != question.id %} {% url 'exam:exampage' passcode active forloop.counter %} {% else %}#{% endif %}" class="mx-1"><button class="questno {% if num.id == question.id %} questactive {% endif %} " >{{ forloop.counter }}</button></a>
+				{% checkans passcode num.id as checked %}
+					<a href="{% if num.id != question.id %} {% url 'exam:exampage' passcode active forloop.counter %} {% else %}#{% endif %}" class="mx-1"><button class="questno {% if num.id == question.id %} questactive {% else %} {% if checked %} answered {% endif %} {% endif %} " >{{ forloop.counter }}</button></a>
 				{% endfor %}
 				
 			</div>
+			{% if question != None %}
+
 			<div class="question">
 				<span class="questionNo">Question {{ questionNo }} </span>
 				<p class="realquestion" >
 					{{ question }}
+					{% if question.image != None and question.image != '' %}
+                  <div class="mt-3 mb-3">
+                    <img src="{{ question.image.url }}" style="max-width: 400px">
+                  </div>
+                  {% endif %}
 				</p>
 			</div>
-			<div class="answers" >
+			<form method="POST" onsubmit="return sub()">
+				{% csrf_token %}
+			<div class="answers">
 				{% for answer in answers %}
 					<div class="mb-2">
-						<span><span class="mr-1">{% checklet forloop.counter %}.</span>  {{ answer }}</span>
+						<input type="radio" name="answer" value="{{ forloop.counter }}" class="mr-1" {% if answer.id == inians.id %}checked{% endif %}  /><span><span class="mr-2"><b>{% checklet forloop.counter %}.</b></span>{{ answer }}</span>
 					</div>
 				{% endfor %}
 			</div>
 			<div class="examfooter text-center">
 				<div class="navigation justify-content-center d-flex" >
-					<div class="previous text-right">PREVIOUS</div><div class="next">NEXT</div>
+					<input type="tex" name="nav" id="nav" style="display: none;">
+					<button class="previous text-right" onclick="prev()">PREVIOUS</button><button class="next" onclick="next()" id="nxt">NEXT</button>
 				</div>
 				<span class="bottom text-uppercase mt-1" >{{ course.name }}</span>
 			</div>
+			<input type="text" id="realsub" name="rsubmit" style="display: none;">
+			</form>
+
+			{% else %}
+
+				 <span style="font-size: 13px; color: rgb(190, 70, 70); font-weight: bold;">No Questions Set</span>
+			{% endif %}
 			
 		</div>
 	</div>
+
+	<script>
+		function prev(){
+			document.getElementById('nav').value = 'prev';
+		}
+		function next(){
+			document.getElementById('nav').value = 'next';
+		}
+
+		function sub(){
+
+			return true;
+		}
+		function rsubmit() {
+			document.getElementById('realsub').value='true';
+			document.getElementById('nxt').click();
+		}
+		var seconds = '{{ seconds }}'
+		function calctime(){
+			seconds = seconds -1;
+			minutes = Math.floor(seconds/60)
+			realsecs = seconds -(minutes * 60);
+			if(realsecs>9){
+				document.getElementById('realtime').innerHTML= (minutes.toString() +':'+realsecs.toString());
+			}else{
+				document.getElementById('realtime').innerHTML= (minutes.toString() +':0'+realsecs.toString());
+			}
+			if(seconds < 1){
+				document.getElementById('subbtn').click();
+			}
+		}
+		function changecolor() {
+			if(seconds < 300){
+				s= seconds / 10;
+				if(seconds <= 10){
+					s=1
+				}
+				document.getElementById('subbtn').style.animation=s.toString()+'s linear 0s infinite  changecolor';
+			}
+		}
+		changecolor();
+		setInterval(calctime, 997);
+		setInterval(changecolor, 9999);
+	</script>
 </body>
 </html>

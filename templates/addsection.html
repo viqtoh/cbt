@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Test | Add Section{% endblock title %}
+
+{% block boot %}
+    <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+    {% endblock boot %}
+
+{% block content %}
+<style type="text/css">
+  
+.pinoverlay{
+  height: 158px;
+  width: 459px;
+  position: fixed;
+  top: calc(50vh - 58px);
+  left: calc(50vw - 229.5px);
+  background-color: white;
+  z-index: 200;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 10px rgba(155, 155, 155, 0.4);
+}
+.overtitle{
+  font-weight: bold;
+  font-size: 12px;
+  color: black;
+}
+#invis{
+  display: none;
+}
+.passinput{
+  width: 100px;
+  background: #E3E3E3;
+  border-radius: 5px;
+  border: 1px solid #E3E3E3;
+  font-size: 25px;
+  letter-spacing: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.passinput:focused{
+  border: 1px solid #E3E3E3;
+}
+.acquireimg{
+  width: 30%;
+}  
+.acquire{
+  width: 30%;
+  height: 50vh;
+}
+@media screen and (max-width: 700px){
+  .pinoverlay{
+    height: 135px;
+    width: 306px;
+    top: calc(50vh - 135px);
+    left: calc(50vw - 153px);
+  }
+  .acquireimg{
+    width: 50%;
+  }
+  .acquire{
+    width: 50%;
+    height: 30vh;
+  }
+}
+</style>
+
+    <!-- ##### MAIN PANEL ##### -->
+    <div class="kt-mainpanel">
+      
+      <div class="kt-pagebody">
+
+        <div class="card" style=" border-radius:10px;background-color:rgba(242, 242, 242, 1);">
+
+        	<div class="kt-pagetitle" style="background-color:rgba(214, 211, 237, 1);color:rgba(35, 30, 84, 1);">
+		        <h5 style=" margin-left:50px;">{{ course.name }} - Sections</h5>
+
+		    </div><!-- kt-pagetitle -->
+		    <div class="cardbody  pd-20 pd-sm-40">
+        <div id="formdiv" class="formdiv mb-5">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="d-flex formtop">
+              <h4>Add a new Section to {{ course.name }}</h4>
+            </div>
+            <p>Name of Section</p>
+            <input class="examname" type="text" name="name" maxlength="20" required><br/>
+            <button class="btn btn-default">Save</button>
+          </form>
+        </div>
+		    	<div class="row crow">
+		    		{% for section in sections %}
+            <a href="{% url 'user:questions' section.id %}">
+		    			<div class="courseCon text-center">
+  		    				<p>{{ section.name }}</p>
+  		    				<p>{{ section.questions.count }} questions</p>
+		    			</div>
+            </a>
+		    		{% endfor %}
+            {% if sections.count == 0 %}
+            <div class="cardbody  pd-20 pd-sm-40">
+              <span>No sections</span>  
+            </div>
+            
+            {% endif %}
+		    	</div>
+		    </div>
+
+
+        </div>
+
+    </div>
+    
+    
+
+    </div><!-- kt-mainpanel -->
+
+
+{% endblock %}

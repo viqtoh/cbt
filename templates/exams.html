@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load alltags %}
+
+{% block title %}Test | Papers{% endblock title %}
+
+{% block boot %}
+    <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    {% endblock boot %}
+
+{% block content %}
+
+    <!-- ##### MAIN PANEL ##### -->
+    <div class="kt-mainpanel">
+      
+      <div class="kt-pagebody">
+
+        <div class="card" style=" border-radius:10px;background-color:rgba(242, 242, 242, 1);">
+
+        	<div class="kt-pagetitle" style="background-color:rgba(214, 211, 237, 1);color:rgba(35, 30, 84, 1);">
+		        <h5 style=" margin-left:50px;">Examinations</h5>
+
+		    </div><!-- kt-pagetitle -->
+		    <div class="cardbody  pd-20 pd-sm-40">
+		    	<div class="row crow mb-5">
+		    		{% for exam in exams %}
+		    		<a class="realc" href="{% url 'user:exam' exam.id %}">
+		    			<div class="examCon text-left">
+		    				<div class="coursetop">
+		    				{% if exam.active %}
+		    					<div class="preactive text-center">
+		    						<div class="d-flex justify-content-center">
+		    						<div class="cirgreen"></div><span class="cirgtext text-monospace">active</span>
+		    					</div>
+		    					</div>
+		    				{% else %}
+		    					<div class="preinactive">
+		    						<div class="d-flex justify-content-center">
+		    						<div class="cirred"></div><span class="cirrtext text-monospace">inactive</span>
+		    					</div>
+		    					</div>
+		    				{% endif %}
+		    				<div>
+		    					<span class="cname text-uppercase">{{ exam.name }}</span>
+		    				</div>
+		    				<div>
+		    					<span class="ctime">{{ exam.time }}  {% if course.time > 1 %}mins{% else %}min{% endif %}</span>
+		    				</div>
+		    				</div>
+			    			<div class="text-justify examdes">
+		    					<span>{{ exam.description }}</span>
+		    				</div>
+		    				
+		    			</div>
+		    			<div class="examlast">
+		    				<span>Last Active: {% if exam.last_active != None %} {{ exam.last_active }} {% else %} Never {% endif %}</span>
+		    			</div>
+		    		</a>
+		    		{% endfor %}
+		    	</div>
+		    </div>
+
+
+        </div>
+
+    </div>
+    
+    
+
+    </div><!-- kt-mainpanel -->
+
+ <script type="text/javascript">
+ 	elements = document.getElementsByClassName('examCon');
+ 	const hs = [];
+ 	for (var i = elements.length - 1; i >= 0; i--) {
+ 		hs.push(elements[i].offsetHeight);
+ 	}
+ 	const max = hs.reduce((a, b) => Math.max(a, b));
+ 	for (var i = elements.length - 1; i >= 0; i--) {
+ 		elements[i].style.height=max.toString()+'px';
+ 	}
+ 	console.log(hs);
+
+ 	</script>
+
+{% endblock %}

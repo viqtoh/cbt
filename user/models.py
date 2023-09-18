@@ -15,9 +15,6 @@ class User(AbstractUser):
 	USERNAME_FIELD = 'email'
 	REQUIRED_FIELDS = []
 	objects = CustomUserManager()
-
-	Gender = models.CharField(max_length=6, null=True, blank=True)
-	Phone_number = models.CharField(max_length=20, null=True, blank=True)
 	FullName = models.CharField(max_length=2555, null=True, blank=True)
 	Feeds = models.ManyToManyField('Feed',blank=True)
 
@@ -28,8 +25,6 @@ class User(AbstractUser):
 	def editUser(self):
 		return reverse('Library:userEdit', args=[self.email])
 
-	def makeLibrarian(self):
-		return reverse('Library:makeLibrarian', args=[self.email])
 	def getName(self):
 		return(self.first_name +" "+ self.last_name)
 	def save(self, *args, **kwargs):

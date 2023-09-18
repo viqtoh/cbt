@@ -1,0 +1,35 @@
+{% load alltags %}
+<div class="col-md-12 pagination" style="margin-bottom: 20px;">
+	 						<!--KF_PAGINATION_WRAP START-->
+							<div class="kf_edu_pagination_wrap">
+								<ul class="pagination">
+									{% if page.has_previous %}
+									<a href="?page={{ page.previous_page_number }}" aria-label="Previous">
+									<li class="prevp">
+										<span aria-hidden="true"><i class="fa fa-angle-left mr-1"></i>Previous</span>
+									</li>
+									</a>
+									{% endif %}
+									{% for page_number in page.number|page_window:page.paginator.num_pages  %}
+									<a class="pagelink" {% if page_number == page.number %} href='#' {% else %} href="?page={{ page_number }}" {% endif %}>
+        <li class="page-item2 text-center {% if page_number == page.number %}pageactive{% endif %}">
+                {{ page_number }} 
+                {% if page_number == page_obj.number %}
+                of {{ page_obj.paginator.num_pages }}
+                {% endif %}
+            
+        </li>
+    </a>
+        {% endfor %}
+									{% if page.has_next %}
+									<a href="?page={{ page.next_page_number }}" aria-label="Next">
+									<li class="nextp">
+										<span aria-hidden="true">Next<i class="fa fa-angle-right ml-1"></i></span>
+									</li>
+								</a>
+									{% endif %}
+								</ul>
+							</div>
+							<!--KF_PAGINATION_WRAP END-->
+ 						</div>
+

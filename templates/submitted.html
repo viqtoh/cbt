@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Logout</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+
+	<style type="text/css">
+		input:focus{
+		outline: none;
+		}
+	</style>
+</head>
+<body>
+	<div class="subbg" style="background: #324531;">
+		<div class="d-flex justify-content-end examtop">
+				<span class="copyr">Copyright @ loam ICT 2023</span>
+			</div>
+		<div class="rsubsubdiv text-center">
+			<p class="exwel subcon">Congratulations!</p>
+			<p class="subname text-uppercase">{{ student.name }}</p>
+			<div style="width: 100%;" class="d-flex justify-content-center">
+				{% if course.show %}
+					<div class="d-flex prescore">
+            <div style="height: 100%; flex-direction: column; justify-content: center;" class="d-flex">
+              <span class="mr-4" style="font-size: 16px; color: black; font-weight: bold;">Your Score:</span>
+            </div>
+              
+              <div class="scorediv" style="transform: rotate(0deg);">
+                <span style="font-size: 25px; color: white;">{{ exam.getscore }}/<span style="font-size: 10px; color: black;">{{ exam.questionsNo }}</span></span>
+              </div>
+            </div>
+				{% else %}
+					<p class="subscore">{{ course.submit }}</p>	
+				{% endif %}
+			</div>
+
+			<a href="{% url 'user:home' %}"><button class="logoutbtn">LOGOUT</button></a>
+			
+		</div>
+	
+	</div>
+</body>
+</html>

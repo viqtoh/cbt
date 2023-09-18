@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
+	<title>{{ course.name }}</title>
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 	<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
@@ -20,15 +21,18 @@
 		<img src="{% static 'images/icon.png' %}" class="logo">
 		<div class="centered text-center">
 			<span class="welspan">WELCOME TO</span><br/>
-			<span class="schspan">LOAM SCHOLARSHIP TEST</span>
+			<span class="schspan text-uppercase">{{ course.name }}</span>
 		</div>
 	</div>
 	<form method="POST">
 		{% csrf_token %}
 	<div class="divider text-center py-3">
-		<span style="font-size: 20px;">Passcode:</span><input type="text" class="passcode mx-2 px-3" name="passcode" required>
+		<span style="font-size: 20px;">Passcode:</span><input autocomplete="off" id="pass" type="text" class="passcode mx-2 px-3" name="passcode" required>
 	</div>
 	<div class="subdiv text-center">
+		{% if error != '' %}
+		<p style="color: red; font-size: 20px">{{ error }}</p>
+		{% endif %}
 		<button class="logbtn">LOGIN</button>
 		<div class="subsubdiv">
 			<p>Carefully type your PASSCODE into the text box provided above and click on LOGIN</p>
@@ -39,4 +43,7 @@
 	</form>
 	</div>
 </body>
+<script type="text/javascript">
+	document.getElementById('pass').focus();
+</script>
 </html>

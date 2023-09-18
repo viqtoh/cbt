@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Test | Sections{% endblock title %}
+
+{% block boot %}
+    <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+    {% endblock boot %}
+
+{% block content %}
+<style type="text/css">
+  
+.pinoverlay{
+  height: 158px;
+  width: 459px;
+  position: fixed;
+  top: calc(50vh - 58px);
+  left: calc(50vw - 229.5px);
+  background-color: white;
+  z-index: 200;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px 10px rgba(155, 155, 155, 0.4);
+}
+.overtitle{
+  font-weight: bold;
+  font-size: 12px;
+  color: black;
+}
+#invis{
+  display: none;
+}
+.passinput{
+  width: 100px;
+  background: #E3E3E3;
+  border-radius: 5px;
+  border: 1px solid #E3E3E3;
+  font-size: 25px;
+  letter-spacing: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.passinput:focused{
+  border: 1px solid #E3E3E3;
+}
+.acquireimg{
+  width: 30%;
+}  
+.acquire{
+  width: 30%;
+  height: 50vh;
+}
+@media screen and (max-width: 700px){
+  .pinoverlay{
+    height: 135px;
+    width: 306px;
+    top: calc(50vh - 135px);
+    left: calc(50vw - 153px);
+  }
+  .acquireimg{
+    width: 50%;
+  }
+  .acquire{
+    width: 50%;
+    height: 30vh;
+  }
+}
+</style>
+
+    <!-- ##### MAIN PANEL ##### -->
+    <div class="kt-mainpanel">
+      
+      <div class="kt-pagebody">
+
+        <div class="card" style=" border-radius:10px;background-color:rgba(242, 242, 242, 1);">
+
+        	<div class="kt-pagetitle" style="background-color:rgba(214, 211, 237, 1);color:rgba(35, 30, 84, 1);">
+		        <h5 style=" margin-left:50px;">{{ course.name }} - Sections</h5>
+
+		    </div><!-- kt-pagetitle -->
+		    <div class="cardbody  pd-20 pd-sm-40">
+          <div id='preformdiv' class="d-flex justify-content-between" style="width: 100%;">
+            <div>
+              <button class="btn btn-default" onclick="show()">Edit Exam</button>
+              {% if course.active == False %}
+               <a href="{% url 'user:makeActive' course.id %}" class="ml-4"><button class="btn btn-default">Make Active</button></a>
+              {% endif %}
+              <a href="{% url 'user:addSection' course.id %}" class="ml-4"><button class="btn btn-default">Add Section</button></a>
+            </div>
+
+          <a href="{% url 'user:deleteCourse' course.id %}"><button class="btn btn-default" style="background-color: red; border-color: red; color: white !important;">Delete Exam</button></a>
+        </div>
+        <div id="formdiv" class="formdiv mb-5 mt-5" style="width: 40%; display: none;">
+          <div class="d-flex formtop">
+              <h4>Add a new Exam</h4> <button class="btn btn-default" onclick="hide()">Close</button>
+            </div>
+          <form method="POST">
+            {% csrf_token %}
+            <p>Name of Exam</p>
+            <input class="examname" type="text" name="name" maxlength="50" value="{{ course.name }}" required>
+            <p>Description</p>
+            <textarea name="description" maxlength="255" placeholder="Information that displays on the welcome page." required>{{ course.description }}</textarea><br/>
+            <p>Submit Info</p>
+            <textarea name="submit" maxlength="512" id="submitdes" placeholder="Information about score that displays at the end of the exam." required>{{ course.submit }}</textarea><br/>
+            <div class="d-flex">
+              <div>
+                <p>Time (min):</p>
+                <input type="number" name="time" class="examtime" min="1" step="1" value="{{ course.time }}" required><br/>
+              </div>
+              <div class="ml-2">
+                <p>Show Score after Submit?</p>
+                <input type="checkbox" name="show" onclick="checkshow()" id="check" {% if course.show %}checked{% endif %}>
+              </div>
+            </div>
+            
+            <button class="btn btn-default">Save</button>
+          </form>
+        </div>
+		    	<div class="row crow">
+		    		{% for section in sections %}
+            <a href="{% url 'user:questions' section.id %}">
+		    			<div class="courseCon2 text-center">
+  		    				<p>{{ section.name }}</p>
+  		    				<p>{{ section.questions.count }} questions</p>
+		    			</div>
+            </a>
+		    		{% endfor %}
+            {% if sections.count == 0 %}
+            <div class="cardbody  pd-20 pd-sm-40">
+              <span>No sections</span>  
+            </div>
+            
+            {% endif %}
+		    	</div>
+		    </div>
+
+
+        </div>
+
+    </div>
+    
+    
+
+    </div><!-- kt-mainpanel -->
+
+ <script type="text/javascript">
+  if(document.getElementById('check').checked == true){
+    document.getElementById('submitdes').required=false;
+    document.getElementById('submitdes').disabled=true;
+  }
+  function checkshow(){
+    if(document.getElementById('check').checked == true){
+      document.getElementById('submitdes').required=false;
+      document.getElementById('submitdes').disabled=true;
+    }else{
+      document.getElementById('submitdes').required=true;
+      document.getElementById('submitdes').disabled=false;
+    }
+  }
+
+  function show(){
+    document.getElementById('preformdiv').style.display='none';
+    document.getElementById('formdiv').style.display='block';
+  }
+  function hide(){
+    document.getElementById('formdiv').style.display='none';
+    document.getElementById('preformdiv').style.display='block';
+  }
+
+ </script>
+
+{% endblock %}
