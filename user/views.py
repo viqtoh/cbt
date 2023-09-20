@@ -259,11 +259,16 @@ def studentDetails(request):
 				student.save()
 		else:
 			student = StudentDetails.objects.filter(id=rid).first()
-			if(student.status == 'active'):
-				student.status = 'inactive'
-			else:
-				student.status = 'active'
-			student.save()
+			action = request.POST.get('action')
+			print(action)
+			if(action == 'delete'):
+				student.delete()
+			if(action == 'status'):
+				if(student.status == 'active'):
+					student.status = 'inactive'
+				else:
+					student.status = 'active'
+				student.save()
 	paginator = Paginator(students, 20)
 	page = request.GET.get('page')
 	try:

@@ -111,7 +111,7 @@
                 <th>Name</th>
                 <th>Passcode</th>
                 <th>Registration No.</th>
-                <th>Status</th>
+                <th>Action</th>
               </thead>
                 <tbody>
                 {% for student in students %}
@@ -121,11 +121,13 @@
                   <td>{{ student.passcode }}</td>
                   <td>{{ student.reg }}</td>
                   <td>
-                    <form method="POST">
+                    <form method="POST" style="display: flex;">
                       {% csrf_token %}
                       <input type="hidden" name="id" value="{{ student.id }}">
+                      <input type="hidden" name="action" class="faction">
                       <input type="hidden" name="next" value="{{ request.path }}">
-                     <button class="{% if student.status == 'active' %} actives {% else %} inactives {% endif %}">{{ student.status }}</button>
+                     <button onclick="makestatus({{ forloop.counter0 }})" class="{% if student.status == 'active' %} actives {% else %} inactives {% endif %}">{{ student.status }}</button>
+                     <button onclick="makedelete({{ forloop.counter0 }})" class="ml-3 inactives">Delete</button>
                     </form>
                   </td>
                 </tr>
@@ -164,6 +166,12 @@
       document.getElementById('preformdiv').style.display='block';
     }
 
+    function makedelete(sn){
+      document.getElementsByClassName('faction')[sn].value='delete';
+    }
+    function makestatus(sn){
+      document.getElementsByClassName('faction')[sn].value='status';
+    }
  </script>
 
 
