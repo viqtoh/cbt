@@ -80,67 +80,35 @@
 
 		    </div><!-- kt-pagetitle -->
 		    <div class="cardbody  pd-20 pd-sm-40">
-          <div class="mb-5 text-right" style="width: 100%;"><a href="{% url 'user:deleteSection' section.id %}"><button class="btn btn-default" style="background-color: red; color: white !important; width: auto !important;">Delete Section</button></a></div>
-		    		{% for question in questions %}
-		    			<div class="mb-5">
-                <div class="d-flex">
-                  <span> #{{ forloop.counter }} </span><div style="display: block;" class="mx-1">{% autoescape off %}{{ question.question }}{% endautoescape %}</div><a href="{% url 'user:editquestion' section.id question.id %}"><i class="fa fa-edit ml-3" style="color: blue;"></i></a><a href="{% url 'user:deleteQ' section.id question.id %}"><i class="fa fa-trash ml-3" style="color: red;"></i></a>
-                </div>
-                  {% if question.image != None and question.image != '' %}
-                  <div class="mt-3 mb-3">
-                    <img src="{{ question.image.url }}" style="max-width: 400px">
-                  </div>
-                  {% endif %}
-                  <div class="ml-3">
-                    {% for answer in question.options.all %}
-                     <div class="mb-2">
-                      <span><span class="mr-1">{% checklet forloop.counter %}.</span>  {{ answer }}</span>{% if answer.id == question.answer.id %}
-                      <i class="fa fa-check" style="color: green;" ></i>{% endif %}
-                    </div>
-                    {% endfor %}  
-                  </div>   
-              </div>
-		    		{% endfor %}
-
+          
+		    	
             <div style="display: block">
               <form method="POST" class="Qform" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p class="mb-2" style="font-size: 18px; font-weight: bolder;">Add Question:</p>
+                <p class="mb-2" style="font-size: 18px; font-weight: bolder;">Edit Question:</p>
                 {{ form.media }}
                 {{ form.question }}
                 <div id="custom-but">
                   <p class="mb-2" style="font-size: 16px; font-weight: bolder;">Add an Image:</p>
-                        <img id="custom-img" src="" class="img-fluid" style="max-width: 400px">
+                        <img id="custom-img" src="{% getimage question %}" class="img-fluid" style="max-width: 400px">
                       </div>
                       <input type="file" name="image" accept="image/*" id="realbut" class="mb-2">
                           </div>
                 <div class="mb-2 d-flex">
                   <span class="mb-2 firstspan">Add Options:</span><span class="mb-2 secondspan">Select Answer:</span>
                 </div>
-                <div style="width: 100%;" class="d-flex">
+                  {% for answer in answers %}
+                   
+
+
+                    <div style="width: 100%;" class="d-flex">
                   <div class="ansFD d-flex">
-                    <span class="lets">A.</span><input type="text" name="answer1" class="ansF" required>
+                    <span class="lets">{% checklet forloop.counter %}.</span><input type="text" value="{{ answer }}" name="answer{{ forloop.counter }}" class="ansF" required>
                   </div>
-                  <input class="ansrad" value="1" type="radio" name="answer" required>
+                  <input class="ansrad" value="{{ forloop.counter }}" type="radio" name="answer" required {% if answer == ans %}checked{% endif %}>
                 </div>
-                <div style="width: 100%;" class="d-flex">
-                  <div class="ansFD d-flex">
-                    <span class="lets">B.</span><input type="text" name="answer2" class="ansF" required>
-                  </div>
-                  <input class="ansrad" value="2" type="radio" name="answer" required>
-                </div>
-                <div style="width: 100%;" class="d-flex">
-                  <div class="ansFD d-flex">
-                    <span class="lets">C.</span><input type="text" name="answer3" class="ansF" required>
-                  </div>
-                  <input class="ansrad" value="3" type="radio" name="answer" required>
-                </div>
-                <div style="width: 100%;" class="d-flex">
-                  <div class="ansFD d-flex">
-                    <span class="lets">D.</span><input type="text" name="answer4" class="ansF" required>
-                  </div>
-                  <input class="ansrad" value="4" type="radio" name="answer" required>
-                </div>
+                    {% endfor %}  
+        
                 <button class="btn btn-default">save</button>
               </form>
             </div>

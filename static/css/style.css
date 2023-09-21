@@ -492,10 +492,9 @@ a .courseCon p{
 	color: black;
 }
 
-#questionF{
+#cke_id_question{
 	width: 100%;
 	margin-bottom: 40px;
-	max-lines: 5;
 	height: 80px;
 }
 .ansFD{

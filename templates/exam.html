@@ -11,7 +11,9 @@
 
 {% block content %}
 <style type="text/css">
-  
+  #pTable{
+    display: none;
+  }
 .pinoverlay{
   height: 158px;
   width: 459px;
@@ -75,8 +77,8 @@
 
         <div class="card" style=" border-radius:10px;background-color:rgba(242, 242, 242, 1);">
 
-        	<div class="kt-pagetitle" style="background-color:rgba(214, 211, 237, 1);color:rgba(35, 30, 84, 1);">
-		        <h5 style=" margin-left:50px;">{{ course.name }} - Examinations</h5>
+        	<div class="kt-pagetitle d-flex justify-content-between" style="background-color:rgba(214, 211, 237, 1);color:rgba(35, 30, 84, 1);">
+		        <h5 style=" margin-left:50px;">{{ course.name }} - Examinations</h5><button class="btn btn-default" style="width:50px;" onclick="printTable()"><i class="fa fa-print" ></i></button>
 
 		    </div><!-- kt-pagetitle -->
 		    <div class="cardbody  pd-20 pd-sm-40">
@@ -87,6 +89,7 @@
             </div>
             
           </form>
+          <div>
             <table style="width: 100%;" class="mt-3 table">
               <thead>
                 <th>s/n</th>
@@ -119,6 +122,33 @@
                 {% endfor %}
               </tbody>
             </table>
+            </div>
+            <div id="pTable">
+              <h3>{{ course.name }} Results</h3>
+            <table style="width: 100%;" class="mt-3 table">
+              <thead style="font-weight: bold;">
+                <th>s/n</th>
+                <th>Name</th>
+                <th>Registration No.</th>
+                <th>Score</th>
+              </thead>
+                <tbody>
+                {% for student in students %}
+                <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td><span class="text-capitalize">{{ student.name }}</span></td>
+                  <td>{{ student.reg }}</td>
+                  <td>
+                    <div class="scorediv fakescorediv" style="text-align: center;">
+                      {% getexam student.id course.id as exam %}
+                      <span style="font-size: 18px;">{{ exam.getscore }}</span>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+            </div>
             {% if students.count == 0 %}
             <div class="cardbody  pd-20 pd-sm-40">
               <span>No Registered Student</span>  
@@ -155,6 +185,17 @@
     document.getElementById('formdiv').style.display='none';
     document.getElementById('preformdiv').style.display='block';
   }
+ function printTable() {
+      var divContents = document.getElementById('pTable').innerHTML;
+      var a = window.open('', '', 'height=500, width=500');
+      a.document.write('<html><head><title>{{ course.name }} Exam Results</title></head><body > ');
+      a.document.write('<style>.table, th, td {border: 1px solid black; border-collapse: collapse;}</style>')
+      a.document.write(divContents);
+      a.document.write('</body></html>');
+      a.document.close();
+      a.print();
+  }
+
 
  </script>
 

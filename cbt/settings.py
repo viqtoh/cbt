@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     #user created
     'user',
     'exam',
+
+    #installed apps
+    'ckeditor',
 ]
 
 MIDDLEWARE = [

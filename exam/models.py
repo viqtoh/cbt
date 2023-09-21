@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
@@ -22,10 +23,10 @@ class Section(models.Model):
 		return (self.name)
 
 class Question(models.Model):
-	question = models.CharField(max_length=2550)
+	question = RichTextField(verbose_name='Question')
 	options = models.ManyToManyField('Answer')
 	image = models.ImageField(upload_to='exams/images/', blank=True, default='')
-	answer = models.ForeignKey('Answer', on_delete=models.CASCADE, null=True, related_name='exam.Question.answer+')
+	answer = models.ForeignKey('Answer', on_delete=models.SET_NULL, null=True, related_name='exam.Question.answer+')
 
 	def __str__(self):
 		return (self.question)

@@ -2,3 +2,4 @@ Django==4.2.4
 django_phonenumber_field==7.1.0
 pillow==10.0.0
 phonenumbers
+ckeditor==6.7.0

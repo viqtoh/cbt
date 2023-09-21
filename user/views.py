@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.datastructures import MultiValueDictKeyError
+from .forms import QuestionForm
 
 # Create your views here.
 
@@ -122,7 +123,11 @@ def questions(request, id):
 	section = Section.objects.filter(id=id).first()
 	questions = section.questions.all()
 	if(request.method == 'POST'):
-		question = request.POST.get('question')
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			question = form.cleaned_data.get("question")
+		else:
+			question = ''
 		try:
 			image = request.FILES['image']
 		except MultiValueDictKeyError:
@@ -151,11 +156,69 @@ def questions(request, id):
 		nquestion.save()
 		section.questions.add(nquestion)
 		section.save()
+	form = QuestionForm()
 	context = {
+	'form':form,
 	'section':section,
 	'questions':questions,
 	}
 	return render(request, 'questions.html', context)
+
+def editquestion(request, id, question_id):
+	section = Section.objects.filter(id=id).first()
+	question = Question.objects.filter(id=question_id).first()
+	answers = question.options.all()
+	ans = question.answer
+	if(request.method == 'POST'):
+		realquestion = Question.objects.filter(id=question_id).first()
+		form = QuestionForm(request.POST)
+		if form.is_valid():
+			question = form.cleaned_data.get("question")
+		else:
+			question = ''
+		try:
+			image = request.FILES['image']
+		except MultiValueDictKeyError:
+			image = None
+		for answ in answers:
+			answ.delete()
+		answer1 = request.POST.get('answer1')
+		answer2 = request.POST.get('answer2')
+		answer3 = request.POST.get('answer3')
+		answer4 = request.POST.get('answer4')
+		answer = request.POST.get('answer')
+		answer = int(answer)
+		answer1 = Answer(answer=answer1)
+		answer2 = Answer(answer=answer2)
+		answer3 = Answer(answer=answer3)
+		answer4 = Answer(answer=answer4)
+		answer1.save()
+		answer2.save()
+		answer3.save()
+		answer4.save()
+		realquestion.question = question
+		if(image != None):
+			realquestion.image = image
+		realquestion.options.add(answer1,answer2,answer3,answer4)
+		options = realquestion.options.all()
+		ans = options[answer-1]
+		realquestion.answer=ans
+		realquestion.save()
+		section.questions.add(realquestion)
+		section.save()
+		return_url = return_url = reverse('user:questions', args=[id])
+		return redirect(return_url)
+	form = QuestionForm(instance=question)
+	context = {
+	'form':form,
+	'section':section,
+	'question':question,
+	'answers':answers,
+	'ans':ans,
+	}
+	return render(request, 'editquestion.html', context)
+
+
 
 @login_required(login_url='', redirect_field_name='next')
 def deleteQ(request,section_id, id):

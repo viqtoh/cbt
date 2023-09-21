@@ -13,6 +13,7 @@ urlpatterns = [
     path('admin/', views.admin, name='admin'),
     path('admin/section/<str:id>/', views.sections, name='sections'),
     path('admin/section/questions/<str:id>/', views.questions, name='questions'),
+    path('admin/section/questions/<str:id>/<str:question_id>/edit/', views.editquestion, name='editquestion'),
     path('admin/section/questions/<str:section_id>/delete/<str:id>/', views.deleteQ, name='deleteQ'),
     path('admin/delete/exam/<str:id>/', views.deleteCourse, name='deleteCourse'),
     path('admin/delete/exam/section/<str:id>/', views.deleteSection, name='deleteSection'),

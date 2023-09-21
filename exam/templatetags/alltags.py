@@ -62,3 +62,9 @@ def checkcorrect(question_id, ans_id):
 	else:
 		return False
 
+@register.simple_tag
+def getimage(object):
+	try:
+		return (object.image.url)
+	except ValueError:
+		return ('')
