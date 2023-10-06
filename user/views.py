@@ -407,7 +407,7 @@ def examinations(request):
 def examination(request, id):
 	courses = Course.objects.all().order_by('-pk')
 	course = courses.filter(id=id).first()
-	students= StudentDetails.objects.filter(exams__course=course)
+	students= Examination.objects.filter(course=course).select_related('student')
 	if (request.method == 'POST'):
 		search = request.POST.get('search',None)
 		if(search != None):

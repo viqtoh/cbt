@@ -15,6 +15,10 @@ class Course(models.Model):
 	last_active = models.DateTimeField(null=True, blank=True)
 	show = models.BooleanField(default=False)
 
+	def get_students(self):
+		students = StudentDetails.objects.filter(exams__course=self)
+		return (students)
+
 class Section(models.Model):
 	name = models.CharField(max_length=255)
 	questions = models.ManyToManyField('Question', blank=True)
@@ -45,23 +49,33 @@ class StudentDetails(models.Model):
 	reg = models.CharField(max_length=255, blank=True)
 	status = models.CharField(max_length=10, default='active')
 
+
 class Examination(models.Model):
 	course = models.ForeignKey('Course',on_delete=models.CASCADE, null=True)
 	questions = models.ManyToManyField('Question', blank=True)
 	answers = models.ManyToManyField('Answer', blank=True)
 	start = models.DateTimeField(default=timezone.now)
 	status = models.CharField(max_length=9, default='running')
+	student = models.ForeignKey('StudentDetails',default=None, on_delete=models.CASCADE, null=True, blank=True)
+	score = models.IntegerField(null=True, default=None)
 
 	def getscore(self):
-		score = 0
-		for ans in self.answers.all():
-			for quest in self.questions.all():
-				if(ans == quest.answer):
-					score+=1
-		return (score)
+		if (self.score != None):
+			return self.score
+		else:
+			score = 0
+			for ans in self.answers.all():
+				for quest in self.questions.all():
+					if(ans == quest.answer):
+						score+=1
+			self.score = score
+			self.save()
+			return (score)
 	def questionsNo(self):
 		sections = self.course.sections.all()
 		count = 0
 		for section in sections:
 			count += section.questions.count()
 		return (count)
+
+	

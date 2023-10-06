@@ -279,7 +279,9 @@ body{
 	text-align: center;
 	min-width: 35px;
 	padding: 3px 8px 3px 8px;
+	margin-bottom: 10px !important;
 	transition-duration: 0.4s;
+
 }
 .questno:hover{
 	transform: scale(1.1);

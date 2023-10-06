@@ -103,17 +103,17 @@
                 {% for student in students %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td><span class="text-capitalize">{{ student.name }}</span></td>
-                  <td>{{ student.passcode }}</td>
-                  <td>{{ student.reg }}</td>
+                  <td><span class="text-capitalize">{{ student.student.name }}</span></td>
+                  <td>{{ student.student.passcode }}</td>
+                  <td>{{ student.student.reg }}</td>
                   <td>
                     <div class="scorediv fakescorediv">
-                      {% getexam student.id course.id as exam %}
+                      {% getexam student.student.id course.id as exam %}
                       <span style="font-size: 18px; color: green;">{{ exam.getscore }}/<span style="font-size: 10px; color: black;">{{ exam.questionsNo }}</span></span>
                     </div>
                   </td>
                   <td>
-                {% getexam student.id course.id as exam %}
+                {% getexam student.student.id course.id as exam %}
                 <a href="{% url 'user:paper' course.id exam.id %}">
                   <button class="btn btn-default btn-view">view</button>
                 </a>
@@ -136,11 +136,11 @@
                 {% for student in students %}
                 <tr>
                   <td>{{ forloop.counter }}</td>
-                  <td><span class="text-capitalize">{{ student.name }}</span></td>
-                  <td>{{ student.reg }}</td>
+                  <td><span class="text-capitalize">{{ student.student.name }}</span></td>
+                  <td>{{ student.student.reg }}</td>
                   <td>
                     <div class="scorediv fakescorediv" style="text-align: center;">
-                      {% getexam student.id course.id as exam %}
+                      {% getexam student.student.id course.id as exam %}
                       <span style="font-size: 18px;">{{ exam.getscore }}</span>
                     </div>
                   </td>

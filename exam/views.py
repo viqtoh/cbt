@@ -16,7 +16,7 @@ def examPage(request, passcode, active, question):
 	if(sections.count() < 1):
 		return redirect('user:home')
 	if(exam==None):
-		exam = Examination(course=course)
+		exam = Examination(course=course, student=student)
 		exam.save()
 		student.exams.add(exam)
 		student.save()
@@ -127,6 +127,7 @@ def submitted(request, passcode):
 	student = StudentDetails.objects.filter(passcode=passcode).first()
 	course = Course.objects.filter(active=True).first()
 	exam = student.exams.filter(course__active=True).first()
+	exam.getscore()
 	context ={
 	'exam':exam,
 	'course':course,

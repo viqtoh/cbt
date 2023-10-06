@@ -39,6 +39,7 @@ def page_window(page, last, size=7):
 @register.simple_tag
 def getexam(student_id, course_id):
 	course = Course.objects.filter(id=course_id).first()
+	print(student_id)
 	student = StudentDetails.objects.filter(id=student_id).first()
 	exam = student.exams.filter(course=course).first()
 	return (exam)
