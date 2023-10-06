@@ -313,17 +313,13 @@ def studentDetails(request):
 						passcode += str(passr)
 					if(StudentDetails.objects.filter(passcode=passcode).first() == None):
 						got = True
-						print('True')
-						print(passcode)
 					else:
-						print('False')
-						print(passcode)
+						pass
 				student = StudentDetails(name =name, passcode=passcode, reg=reg)
 				student.save()
 		else:
 			student = StudentDetails.objects.filter(id=rid).first()
 			action = request.POST.get('action')
-			print(action)
 			if(action == 'delete'):
 				student.delete()
 			if(action == 'status'):
@@ -366,11 +362,8 @@ def studentDetailsSearch(request, search):
 						passcode += str(passr)
 					if(StudentDetails.objects.filter(passcode=passcode).first() == None):
 						got = True
-						print('True')
-						print(passcode)
 					else:
-						print('False')
-						print(passcode)
+						pass
 				student = StudentDetails(name =name, passcode=passcode)
 				student.save()
 		else:
